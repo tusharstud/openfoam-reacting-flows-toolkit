@@ -142,6 +142,7 @@ openfoam-reacting-flows-toolkit/
 └── docs/
     ├── theory_and_formulation.md              # Mathematical equations (Navier-Stokes, PaSR, DPM)
     └── reports/                               # Full technical LaTeX validation reports (PDFs)
+        ├── FInal_Week_Report_IITH.pdf
         ├── Lewis_Validation_Report.pdf
         ├── Metal_Combustion_Pillar1_Validation_Report.pdf
         ├── Metal_Combustion_Pillar2_PureCFD_Validation_Report_Final.pdf
@@ -182,6 +183,7 @@ python postprocessing/plot_flame_profiles.py --demo
 ## 📄 Technical Reports
 
 Full peer-reviewed validation reports detailing mesh convergence, numerical discrepancy analysis, and formulation derivations are available in [docs/reports/](docs/reports/):
+- **[IIT Hyderabad Fellowship Report (OH-PLIF & PIV Hydrogen Diagnostics)](docs/reports/FInal_Week_Report_IITH.pdf)**
 - **[Lewis Validation Report](docs/reports/Lewis_Validation_Report.pdf)**
 - **[Pillar 1 Validation Report](docs/reports/Metal_Combustion_Pillar1_Validation_Report.pdf)**
 - **[Pillar 2 PureCFD Validation Report](docs/reports/Metal_Combustion_Pillar2_PureCFD_Validation_Report_Final.pdf)**
