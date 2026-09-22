@@ -1,0 +1,40 @@
+# OpenFOAM Time Directories
+[0-9]*
+[0-9]*.[0-9]*
+!0/
+!0.orig/
+
+# Parallel decomposition folders
+processor*
+
+# Meshing & Geometry
+constant/polyMesh/points
+constant/polyMesh/faces
+constant/polyMesh/owner
+constant/polyMesh/neighbour
+constant/polyMesh/boundary
+constant/polyMesh/pointZones
+constant/polyMesh/faceZones
+constant/polyMesh/cellZones
+
+# OpenFOAM logs & temporary files
+log.*
+PyFoam*
+*.foam
+*.OpenFOAM
+*.vtk
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env/
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
