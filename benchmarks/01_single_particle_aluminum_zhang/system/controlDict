@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            
+(
+    "libmetalParcel.so"
+);
+
+application     foamRun;
+solver          fluid;
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+endTime         0.0001;       // 100 microseconds heating & reaction study
+
+deltaT          1e-7;         // 0.1 microseconds resolution
+writeControl    timeStep;
+writeInterval   50;           // Output state every 5 us
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  8;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;
+adjustTimeStep  no;
+
+// ************************************************************************* //

@@ -1,0 +1,84 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0.5);
+
+boundaryField
+{
+    // File: 0/U
+nozzleInlet
+{
+    type            codedFixedValue;
+    name            parabolicInlet;
+    code
+    #{
+        const vectorField& Cf = patch().Cf();
+        vectorField& U = *this;
+        const scalar R = 0.010;       // 10 mm nozzle radius
+        const scalar Umean = 0.5;     // 0.5 m/s mean flow
+        forAll(Cf, i)
+        {
+            scalar r = sqrt(sqr(Cf[i].x()) + sqr(Cf[i].y()));
+            scalar u_z = 2.0 * Umean * max(0.0, 1.0 - sqr(r/R));
+            U[i] = vector(0, 0, u_z);
+        }
+    #};
+    value           uniform (0 0 0.5);
+}
+
+    burnerWall
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+
+    coflowInlet
+    {
+        type            fixedValue;
+        value           uniform (0 0 0.5);
+    }
+
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           uniform (0 0 0.5);
+    }
+
+    outerAtmosphere
+    {
+        type            slip;
+    }
+
+    axis
+    {
+        type            empty;
+    }
+
+    frontAndBack_pos
+    {
+        type            wedge;
+    }
+
+    frontAndBack_neg
+    {
+        type            wedge;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,167 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      coalCloud1Properties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type            reactingMultiphaseCloud;
+active          true;
+
+dp              20e-6;
+
+solution
+{
+    active              true;
+    coupled             true;
+    transient           yes;
+    cellValueSourceCorrection off;
+    maxCo               0.3;
+
+    sourceTerms
+    {
+        schemes
+        {
+            rho         explicit 1;
+            U           explicit 1;
+            Yi          explicit 1;
+            h           explicit 1;
+            radiation   explicit 1;
+        }
+    }
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cellPoint;
+        mu              cell;
+        T               cellPoint;
+        Cp              cell;
+        p               cell;
+        kappa           cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+        T               Euler;
+    }
+}
+
+constantProperties
+{
+    rho0                2700;
+    T0                  300;
+    Cp0                 900;
+    epsilon0            1;
+    f0                  1;
+    hRetentionCoeff     1.0;
+    constantVolume      false;
+    minParcelMass       1e-25;
+    fixedParticle       true;
+}
+
+subModels
+{
+    particleForces
+    {
+        sphereDrag;
+        gravity gravity;
+    }
+
+    injectionModels
+    {
+        model1
+        {
+            type                manualInjection;
+            massTotal           #calc "3.141592653589793 / 6.0 * pow(20e-6, 3) * 2700.0";
+            parcelBasisType     mass;
+            nParticle           1;
+            SOI                 0;
+            positionsFile       "kinematicCloudPositions";
+            U0                  (0 0 0);
+            uniformParcelSize   nParticle;
+
+            sizeDistribution
+            {
+                type            fixedValue;
+                fixedValueDistribution
+                {
+                    value       20e-6;
+                }
+            }
+        }
+    }
+
+    compositionModel    singleMixtureFraction;
+    singleMixtureFractionCoeffs
+    {
+        phases
+        (
+            solid
+            {
+                C               1.0;
+                ash             0.0;
+            }
+            liquid
+            {
+                Al_liquid       1.0;
+            }
+            gas
+            {
+                N2              1.0;
+            }
+        );
+        YGasTot0        0.0;
+        YLiquidTot0     0.0;
+        YSolidTot0      1.0;
+    }
+
+    dispersionModel     none;
+    patchInteractionModel none;
+
+    heatTransferModel   Kavanau;
+    KavanauCoeffs
+    {
+        transitionFactor 0.05;
+        BirdCorrection   true;
+    }
+
+    phaseChangeModel    OxideCapEvaporation;
+    OxideCapEvaporationCoeffs
+    {
+        enthalpyTransfer enthalpyDifference;
+        activeLiquids   ( Al_liquid );
+        L_evap          1.05e7;
+    }
+
+    devolatilisationModel none;
+
+    surfaceReactionModel GurevichHSR;
+    GurevichHSRCoeffs
+    {
+        Ar              15000.0;
+        Ea              83720.0;
+        h_HSR           3.1e7;
+        Sb              0.8889;
+        C1              1.0;
+        C2              1.0;
+        E               1.67e8;
+        A               1e5;
+    }
+
+    stochasticCollisionModel none;
+    surfaceFilmModel none;
+    radiation           off;
+}
+
+// ************************************************************************* //

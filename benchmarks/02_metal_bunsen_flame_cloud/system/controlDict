@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  13
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            
+(
+    "libmetalParcel.so"
+    "libfieldFunctionObjects.so"
+);
+
+application     foamRun;
+solver          multicomponentFluid;
+startFrom       startTime;
+startTime       0.3;
+stopAt          endTime;
+endTime         0.45;
+
+deltaT          2e-6;
+writeControl    runTime;
+writeInterval   0.005;
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  8;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;
+adjustTimeStep  yes;
+maxCo           0.3;
+maxDeltaT       2.5e-6;
+
+functions
+{
+    // Time-averaged fields (Exact requirement of Zhang et al. 2022 Page 6)
+    // Automatically computes TMean, UMean, O2Mean, Al2O3Mean, Al_liquidMean
+    fieldAverage1
+    {
+        type                fieldAverage;
+        libs                ("libfieldFunctionObjects.so");
+        writeControl        writeTime;
+
+        timeStart           0.35;
+        startTime           0.35;
+        base                time;
+
+        mean                yes;
+        prime2Mean          no;
+
+        fields              (T U O2 Al2O3 Al_liquid);
+    }
+}
+
+// ************************************************************************* //

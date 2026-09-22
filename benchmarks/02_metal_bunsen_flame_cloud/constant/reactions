@@ -1,0 +1,32 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  Field         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      reactions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+reactions
+{
+    aluminumVaporOxidation
+    {
+        type        irreversibleArrhenius;
+        reaction    "Al_liquid + 0.75O2^1.0 = 0.5Al2O3";
+        A           5e+11;
+        beta        0;
+        Ta          15000;
+        Thigh       5000;
+        Tlow        300;
+    }
+}
+
+// ************************************************************************* //

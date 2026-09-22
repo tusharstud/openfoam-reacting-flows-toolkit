@@ -1,8 +1,12 @@
-# OpenFOAM Time Directories (ignore generated non-zero time directories inside cases)
+# OpenFOAM Time Directories (ignore generated non-zero time directories inside cases and benchmarks)
 cases/*/[1-9]*/
 cases/*/[0-9]*.[0-9]*/
 !cases/*/0/
 !cases/*/0.orig/
+benchmarks/*/[1-9]*/
+benchmarks/*/[0-9]*.[0-9]*/
+!benchmarks/*/0/
+!benchmarks/*/0.orig/
 
 # Parallel decomposition folders
 **/processor*

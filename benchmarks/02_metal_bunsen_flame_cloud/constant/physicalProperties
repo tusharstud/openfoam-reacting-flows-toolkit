@@ -1,0 +1,254 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  Field         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      physicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            hePsiThermo;
+    mixture         multiComponentMixture;
+    transport       sutherland;
+    thermo          janaf;
+    energy          sensibleEnthalpy;
+    equationOfState perfectGas;
+    specie          specie;
+}
+
+species
+(
+    O2
+    N2
+    CO2
+    Al_liquid
+    Al2O3
+);
+
+defaultSpecie   N2;
+
+// =========================================================================
+// --- GAS PHASE SPECIES JANAF THERMODYNAMICS & TRANSPORT ------------------
+// =========================================================================
+
+O2
+{
+    specie
+    {
+        molWeight       31.9988;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           6000;
+        Tcommon         1000;
+        highCpCoeffs    ( 3.66096 0.000656366 -1.4115e-07 2.05798e-11 -1.29913e-15 -1215.98 3.41536 );
+        lowCpCoeffs     ( 3.78246 -0.00299673 9.8473e-06 -9.6813e-09 3.24373e-12 -1063.94 3.65768 );
+    }
+    transport
+    {
+        As              1.67212e-06;
+        Ts              170.672;
+    }
+}
+
+N2
+{
+    specie
+    {
+        molWeight       28.0134;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           6000;
+        Tcommon         1000;
+        highCpCoeffs    ( 2.95258 0.0013969 -4.92632e-07 7.8601e-11 -4.60755e-15 -923.949 5.87189 );
+        lowCpCoeffs     ( 3.53101 -0.000123661 -5.02999e-07 2.43531e-09 -1.40881e-12 -1046.98 2.96747 );
+    }
+    transport
+    {
+        As              1.67212e-06;
+        Ts              170.672;
+    }
+}
+
+CO2
+{
+    specie
+    {
+        molWeight       44.01;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           6000;
+        Tcommon         1000;
+        highCpCoeffs    ( 4.63651 0.00274146 -9.95898e-07 1.60387e-10 -9.16199e-15 -49024.9 -1.9349 );
+        lowCpCoeffs     ( 2.35681 0.00898413 -7.12206e-06 2.4573e-09 -1.42885e-13 -48372 9.9009 );
+    }
+    transport
+    {
+        As              1.482e-06;
+        Ts              240;
+    }
+}
+
+Al_liquid
+{
+    specie
+    {
+        molWeight       26.9815;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           6000;
+        Tcommon         1000;
+        highCpCoeffs    ( 2.5 0 0 0 0 38048.9 4.30514 );
+        lowCpCoeffs     ( 2.5 0 0 0 0 38048.9 4.30514 );
+    }
+    transport
+    {
+        As              1.67212e-06;
+        Ts              170.672;
+    }
+}
+
+// =========================================================================
+Al2O3
+{
+    specie
+    {
+        molWeight       101.961;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           6000;
+        Tcommon         1000;
+        highCpCoeffs    ( 11.8225 0.00172548 -6.77407e-07 1.15825e-10 -7.21084e-15 -69710 -30.5569 );
+        lowCpCoeffs     ( 5.63487 0.0244277 -3.39723e-05 2.31683e-08 -6.2793e-12 -68283.9 0.0147501 );
+    }
+    transport
+    {
+        As              1.67212e-06;
+        Ts              170.672;
+    }
+}
+
+// --- LAGRANGIAN SOLID PHASE PROPERTIES ----------------------------------
+// =========================================================================
+
+solids
+{
+    C       // Aluminum Solid Core
+    {
+        rho             2700;
+        Cp              900;
+        kappa           237;
+        Hf              0;
+        molWeight       26.98;
+    }
+
+    ash     // Alumina Oxide Shell Product
+    {
+        rho             3950;
+        Cp              1050;
+        kappa           30;
+        Hf              -1675700;
+        molWeight       101.96;
+    }
+}
+
+// =========================================================================
+// --- LAGRANGIAN LIQUID PHASE PROPERTIES ---------------------------------
+// =========================================================================
+
+liquids
+{
+    Al_liquid
+    {
+        type            liquid;
+        W               26.9815;
+        Tc              8000;
+        Pc              4.1e8;
+        Vc              0.088;
+        Zc              0.28;
+        Tt              933.47;
+        Pt              1e-5;
+        Tb              2792;
+        dipm            0;
+        omega           0;
+        delta           0;
+        sf              0;
+        vfc             0;
+        solb            0;
+
+        rho
+        {
+            type        constant;
+            value       2700;
+        }
+        pv
+        {
+            type        constant;
+            value       1e-5;
+        }
+        hl
+        {
+            type        constant;
+            value       1.05e7;
+        }
+        Cp
+        {
+            type        constant;
+            value       1140;
+        }
+        h
+        {
+            type        constant;
+            value       0;
+        }
+        c
+        {
+            type        constant;
+            value       0;
+        }
+        mu
+        {
+            type        constant;
+            value       1e-3;
+        }
+        kappa
+        {
+            type        constant;
+            value       100;
+        }
+        pt
+        {
+            type        constant;
+            value       0;
+        }
+        sigma
+        {
+            type        constant;
+            value       0.86;
+        }
+        D
+        {
+            type        constant;
+            value       1e-9;
+        }
+    }
+}
+// ************************************************************************* //

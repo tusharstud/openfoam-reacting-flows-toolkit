@@ -1,0 +1,22 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  Field         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      combustionProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+combustionModel  laminar;
+
+active          true;
+
+// ************************************************************************* //

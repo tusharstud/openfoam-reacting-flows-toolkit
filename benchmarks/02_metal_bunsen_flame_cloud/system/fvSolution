@@ -1,0 +1,53 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  Field         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "(p|U|T|e|h|k|epsilon|omega|Yi)"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-6;
+        relTol          0.01;
+        minIter         1;
+    }
+
+    "(p|U|T|e|h|k|epsilon|omega|Yi)Final"
+    {
+        $U;
+        relTol          0;
+        minIter         1;
+    }
+
+    rho
+    {
+        solver          diagonal;
+    }
+
+    rhoFinal
+    {
+        $rho;
+    }
+}
+
+PIMPLE
+{
+    transonic       yes;
+    nOuterCorrectors 2;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 0;
+}
+// ************************************************************************* //

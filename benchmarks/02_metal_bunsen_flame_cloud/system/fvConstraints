@@ -1,0 +1,27 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  Field         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvConstraints;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+limitT
+{
+    type            limitTemperature;
+    cellZone        all;
+    min             250;
+    max             5000;
+}
+
+
+// ************************************************************************* //

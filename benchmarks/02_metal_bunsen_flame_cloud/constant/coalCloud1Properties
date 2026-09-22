@@ -1,0 +1,174 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   Operation     | Website:  https://openfoam.org
+    \\  /    And           | Version:  13
+     \\/     Manipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      coalCloud1Properties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type            reactingMultiphaseCloud;
+dp              5.4e-6;                 // Median particle diameter = 5.4 micron
+solution
+{
+    active              true;
+    coupled             true;           // 2-Way Interphase Coupling
+    cellValueSourceCorrection on;       // Particle self-induced field correction
+    maxCo               0.3;
+    sourceTerms
+    {
+        schemes
+        {
+            rho         semiImplicit 1;
+            U           semiImplicit 1;
+            Yi          semiImplicit 1;
+            h           semiImplicit 1;
+            radiation   semiImplicit 1;
+        }
+    }
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cell;
+        mu              cell;
+        T               cell;
+        Cp              cell;
+        p               cell;
+        kappa           cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+        T               Euler;
+    }
+}
+
+constantProperties
+{
+    rho0                2700;// Solid/Liquid Al density [kg/m^3]
+    T0                  300;// Initial particle injection temp [K]
+    Cp0                 900;// Al specific heat capacity [J/(kg.K)]
+    epsilon0            1;
+    f0                  1;
+    hRetentionCoeff     0.5;// Heat retention factor
+    constantVolume      false;
+    minParcelMass       1e-18;
+
+    // Freely moving particles for Pillar 2 cloud combustion
+    fixedParticle       false;// Particles freely moving with flow
+}
+
+subModels
+{
+	particleForces
+	{
+    	sphereDrag;                         // Aerodynamic drag
+    	gravity gravity;                    // Buoyancy and gravity settling
+	}
+
+    injectionModels
+    {
+        model1
+        {
+            type                patchInjection;
+            patchName           nozzleInlet;
+            SOI                 0;
+            duration            1000;
+            massFlowRate        6.545e-7;   // [kg/s] for 3-deg wedge sector (500 g/m^3 dust)
+            parcelsPerSecond    20000;      // Scalable: 2e4 for local test, 5e5 for full workstation run   // Number of statistical parcels/sec
+            uniformParcelSize   volume;
+            U0                  (0 0 0.5);	// Axial injection velocity (0.5 m/s)
+            flowRateProfile     constant 1;
+
+            sizeDistribution
+            {
+                type            fixedValue;
+                fixedValueDistribution
+                {
+                    value       5.4e-6;
+                }
+            }
+        }
+    }
+
+    compositionModel    singleMixtureFraction;
+    singleMixtureFractionCoeffs
+    {
+        phases
+        (
+            solid
+            {
+                C               1.0;
+                ash             0.0;
+            }
+            liquid
+            {
+                Al_liquid       1.0;
+            }
+            gas
+            {
+                N2              1.0;
+            }
+        );
+        YGasTot0        0.0;
+        YLiquidTot0     0.0;
+        YSolidTot0      1.0;
+    }
+
+    dispersionModel     none;
+
+    patchInteractionModel standardWallInteraction;
+
+    standardWallInteractionCoeffs
+    {
+        type            rebound;
+    }
+
+    // --- Transition Regime Interphase Heat Transfer (Kavanau Model) ---
+    heatTransferModel   Kavanau;
+    KavanauCoeffs
+    {
+        transitionFactor 0.05;
+        BirdCorrection   true;
+    }
+
+    // --- Phase Change Model (Aluminum Evaporation) ---
+    phaseChangeModel    OxideCapEvaporation;
+    OxideCapEvaporationCoeffs
+    {
+        enthalpyTransfer enthalpyDifference;
+        activeLiquids   ( Al_liquid );
+        L_evap          1.05e7;
+    }
+
+    devolatilisationModel none;
+
+    // --- Heterogeneous Surface Reaction (Gurevich HSR Model) ---
+    surfaceReactionModel GurevichHSR;
+    GurevichHSRCoeffs
+    {
+        Ar              15000.0;
+        Ea              83720.0;
+        h_HSR           3.1e7;
+        Sb              0.8889;
+        C1              1.0;
+        C2              1.0;
+        E               1.67e8;
+        A               1e5;
+    }
+
+    stochasticCollisionModel none;
+    surfaceFilmModel none;
+    radiation           off;
+}
+
+// ************************************************************************* //
