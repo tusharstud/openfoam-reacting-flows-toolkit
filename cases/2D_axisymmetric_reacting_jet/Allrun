@@ -1,0 +1,25 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+
+# 1. Generate computational mesh
+runApplication blockMesh
+
+# 2. Check mesh quality
+runApplication checkMesh
+
+# 3. Initialize parallel decomposition (optional, 4 cores default)
+# runApplication decomposePar
+# runParallel reactingFoam
+# runApplication reconstructPar
+
+# Serial execution
+runApplication reactingFoam
+
+# 4. Extract post-processing line samples
+runApplication postProcess -func sampleDict
+
+echo "---------------------------------------------------------"
+echo "Simulation completed successfully."
+echo "Execute: python ../../postprocessing/plot_flame_profiles.py"
+echo "---------------------------------------------------------"

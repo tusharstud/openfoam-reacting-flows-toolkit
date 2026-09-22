@@ -1,28 +1,28 @@
-# OpenFOAM Time Directories
-[0-9]*
-[0-9]*.[0-9]*
-!0/
-!0.orig/
+# OpenFOAM Time Directories (ignore generated non-zero time directories inside cases)
+cases/*/[1-9]*/
+cases/*/[0-9]*.[0-9]*/
+!cases/*/0/
+!cases/*/0.orig/
 
 # Parallel decomposition folders
-processor*
+**/processor*
 
-# Meshing & Geometry
-constant/polyMesh/points
-constant/polyMesh/faces
-constant/polyMesh/owner
-constant/polyMesh/neighbour
-constant/polyMesh/boundary
-constant/polyMesh/pointZones
-constant/polyMesh/faceZones
-constant/polyMesh/cellZones
+# Meshing & Geometry generated files (keep dictionaries)
+**/polyMesh/points
+**/polyMesh/faces
+**/polyMesh/owner
+**/polyMesh/neighbour
+**/polyMesh/boundary
+**/polyMesh/pointZones
+**/polyMesh/faceZones
+**/polyMesh/cellZones
 
 # OpenFOAM logs & temporary files
-log.*
-PyFoam*
-*.foam
-*.OpenFOAM
-*.vtk
+**/log.*
+**/PyFoam*
+**/*.foam
+**/*.OpenFOAM
+**/*.vtk
 
 # Python
 __pycache__/

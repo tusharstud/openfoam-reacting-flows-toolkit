@@ -1,0 +1,111 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Version:  v2012 / v2206 / v2312
+    \\  /    A nd           | Website:  www.openfoam.com
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   0.001; // mm to meters
+
+vertices
+(
+    // Fuel jet inlet block
+    (0   0    -0.5)  // 0
+    (5   0    -0.5)  // 1
+    (5   300  -0.5)  // 2
+    (0   300  -0.5)  // 3
+    (0   0     0.5)  // 4
+    (5   0     0.5)  // 5
+    (5   300   0.5)  // 6
+    (0   300   0.5)  // 7
+
+    // Co-flow oxidizer block
+    (50  0    -0.5)  // 8
+    (50  300  -0.5)  // 9
+    (50  0     0.5)  // 10
+    (50  300   0.5)  // 11
+);
+
+blocks
+(
+    // Core fuel jet stream
+    hex (0 1 2 3 4 5 6 7) (25 150 1) simpleGrading (1 2.5 1)
+
+    // Co-flow shear layer stream
+    hex (1 8 9 2 5 10 11 6) (65 150 1) simpleGrading (3.0 2.5 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    fuelInlet
+    {
+        type patch;
+        faces
+        (
+            (0 4 5 1)
+        );
+    }
+    coflowInlet
+    {
+        type patch;
+        faces
+        (
+            (1 5 10 8)
+        );
+    }
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (3 2 6 7)
+            (2 9 11 6)
+        );
+    }
+    axis
+    {
+        type symmetryPlane;
+        faces
+        (
+            (0 3 7 4)
+        );
+    }
+    outerWall
+    {
+        type patch;
+        faces
+        (
+            (8 10 11 9)
+        );
+    }
+    frontAndBack
+    {
+        type empty;
+        faces
+        (
+            (0 1 2 3)
+            (1 8 9 2)
+            (4 7 6 5)
+            (5 6 11 10)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

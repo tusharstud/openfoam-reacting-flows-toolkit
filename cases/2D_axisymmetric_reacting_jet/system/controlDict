@@ -1,0 +1,72 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Version:  v2012 / v2206 / v2312
+    \\  /    A nd           | Website:  www.openfoam.com
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     reactingFoam;
+
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+endTime         0.05;
+
+deltaT          1e-6;
+writeControl    adjustableRunTime;
+writeInterval   0.005;
+
+purgeWrite      5;
+writeFormat     ascii;
+writePrecision  6;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;
+adjustTimeStep  yes;
+maxCo           0.5;
+maxDeltaT       1e-5;
+
+functions
+{
+    residuals
+    {
+        type            residuals;
+        libs            ("libutilityFunctionObjects.so");
+        writeControl    timeStep;
+        writeInterval   1;
+        fields          (p U h k epsilon H2 O2 H2O);
+    }
+
+    centerlineSample
+    {
+        type            sets;
+        libs            ("libsampling.so");
+        writeControl    writeTime;
+        interpolationScheme cellPoint;
+        setFormat       raw;
+        sets
+        (
+            centerline
+            {
+                type        uniform;
+                axis        y;
+                start       (0 0 0);
+                end         (0 0.30 0);
+                nPoints     300;
+            }
+        );
+        fields          (T p U H2 O2 H2O N2);
+    }
+}
+
+// ************************************************************************* //
