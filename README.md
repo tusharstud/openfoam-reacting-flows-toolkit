@@ -133,6 +133,7 @@ A comprehensive overview of the governing equations is provided in [docs/theory_
 *Specialization: Combustion CFD, Reacting Flows & Optical Propulsion Diagnostics*  
 - **Email:** [tusharraj8770@gmail.com](mailto:tusharraj8770@gmail.com)
 - **LinkedIn:** [linkedin.com/in/tushar-sagar-5672a1252](https://linkedin.com/in/tushar-sagar-5672a1252)
+- **GitHub:** [github.com/tusharstud](https://github.com/tusharstud)
 
 > **Prospective Graduate Applicant (Fall 2027):**  
 > Actively seeking **Direct PhD / Research Master's** opportunities in Turbulent Combustion, Metal Fuel Oxidation, and Advanced Propulsion CFD.
