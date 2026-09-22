@@ -7,12 +7,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Research: Combustion CFD](https://img.shields.io/badge/Focus-Turbulent%20Reacting%20Flows%20%26%20Metal%20Fuels-orange.svg)](#)
 
-<p align="center">
-  <img src="results/Bunsen_Flame_Combustion_Animation.gif" width="680" alt="Metal Combustion Bunsen Flame Cloud Animation">
-  <br>
-  <em>Figure: Direct OpenFOAM simulation of metal particle cloud combustion and flame stabilization in a Bunsen burner.</em>
-</p>
-
 ---
 
 ## 📌 Overview
@@ -53,28 +47,14 @@ Simulation captures the complete thermal history, including the **dual melting t
 ---
 
 ### 2. Case 2.1: Aluminum Particle Cloud Combustion in Bunsen Flame
-Multiphase Eulerian-Lagrangian reacting flow tracking discrete particle clouds in a Bunsen burner geometry:
+Multiphase Eulerian-Lagrangian reacting flow tracking discrete particle clouds in a Bunsen burner geometry. Complete case configurations, initial conditions, spark ignition routines, and post-processing tools are provided in [`benchmarks/02_metal_bunsen_flame_cloud/`](benchmarks/02_metal_bunsen_flame_cloud/).
 
-<p align="center">
-  <img src="results/Figure9_Master_Comparison_Paper_vs_Simulation.png" width="850" alt="Bunsen Flame Structure Comparison">
-  <br>
-  <em>Figure: Comparison of 2D flame temperature structure, species contours, and particle cloud distribution against Zhang et al.</em>
-</p>
-
-<p align="center">
-  <img src="results/Figure10_Master_Comparison_Paper_vs_Simulation.png" width="750" alt="Radial Profiles Comparison at 12mm">
-  <br>
-  <em>Figure: Radial temperature and velocity profile validation at $z = 12\,\text{mm}$ downstream of burner exit.</em>
-</p>
+Full physical flame structure analysis, spatial temperature fields, and radial profiles at $z = 12\,\text{mm}$ are documented in detail in the [Metal Combustion Pillar 2 Validation Report](docs/reports/Metal_Combustion_Pillar2_PureCFD_Validation_Report_Final.pdf).
 
 ---
 
 ### 3. Laminar Burning Velocity vs Goroshin & Lewis Benchmarks
-Laminar burning velocity ($S_L$) validation across metal dust concentrations, compared against classical experimental data by Goroshin et al. and Lewis:
-
-<p align="center">
-  <img src="results/Figure_Case24_Burning_Velocity_Goroshin.png" width="650" alt="Laminar Burning Velocity vs Goroshin Experimental Data">
-</p>
+Laminar burning velocity ($S_L$) validation across metal aerosol concentrations, evaluated against benchmark experimental data by Goroshin et al. and Lewis. Numerical methodologies, flame speed extraction algorithms, and discrepancy metrics are documented in the [Lewis Validation Report](docs/reports/Lewis_Validation_Report.pdf).
 
 ---
 
@@ -117,7 +97,7 @@ openfoam-reacting-flows-toolkit/
 │   │   └── Case11_Figure4_Validation.png
 │   ├── 02_metal_bunsen_flame_cloud/          # Case 2.1: Particle cloud in Bunsen burner
 │   │   ├── 0/, constant/, system/, run scripts
-│   │   └── Figure9_Master_Comparison_Paper_vs_Simulation.png
+│   │   └── check_T_dist.py
 │   └── 03_nano_vs_micron_combustion/         # Comparison of nano (50nm) vs micron (20µm) burn rates
 │       ├── 0/, constant/, system/
 │       └── Figure_BurnRate_Comparison_Nano_vs_Micron.png
@@ -132,12 +112,10 @@ openfoam-reacting-flows-toolkit/
 │   ├── extract_flame_profiles.py              # OpenFOAM sample line sets parser
 │   └── plot_flame_profiles.py                 # Matplotlib publication-grade plotting suite
 │
-├── results/                                   # High-resolution validation figures & animations
-│   ├── Bunsen_Flame_Combustion_Animation.gif
+├── results/                                   # High-resolution validation figures
 │   ├── Case11_Figure4_Validation.png
-│   ├── Figure9_Master_Comparison_Paper_vs_Simulation.png
-│   ├── Figure10_Master_Comparison_Paper_vs_Simulation.png
-│   └── Figure_Case24_Burning_Velocity_Goroshin.png
+│   ├── centerline_validation.png
+│   └── residual_convergence.png
 │
 └── docs/
     ├── theory_and_formulation.md              # Mathematical equations (Navier-Stokes, PaSR, DPM)
